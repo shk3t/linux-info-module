@@ -1,4 +1,4 @@
-obj-m += lab-module.o
+obj-m += info-module.o
 
 KDIR = /lib/modules/$(shell uname -r)/build
 
