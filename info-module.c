@@ -28,13 +28,13 @@ static size_t write_thread_struct(char __user* ubuf, struct task_struct* task) {
     size_t len = 0;
 
     struct thread_struct thread = task->thread;
-    len += sprintf(buf + len, "%14s %lx\n", "stack pointer:", thread.sp);
-    len += sprintf(buf + len, "%14s %hx\n", "es:", thread.es);
-    len += sprintf(buf + len, "%14s %hx\n", "ds:", thread.ds);
-    len += sprintf(buf + len, "%14s %hx\n", "fsindex:", thread.fsindex);
-    len += sprintf(buf + len, "%14s %hx\n", "gsindex:", thread.gsindex);
-    len += sprintf(buf + len, "%14s %lx\n", "fsbase:", thread.fsbase);
-    len += sprintf(buf + len, "%14s %lx\n", "gsbase:", thread.gsbase);
+    len += sprintf(buf + len, "%16s %lx\n", "stack pointer:", thread.sp);
+    len += sprintf(buf + len, "%16s %hx\n", "es:", thread.es);
+    len += sprintf(buf + len, "%16s %hx\n", "ds:", thread.ds);
+    len += sprintf(buf + len, "%16s %hx\n", "fsindex:", thread.fsindex);
+    len += sprintf(buf + len, "%16s %hx\n", "gsindex:", thread.gsindex);
+    len += sprintf(buf + len, "%16s %lx\n", "fsbase:", thread.fsbase);
+    len += sprintf(buf + len, "%16s %lx\n", "gsbase:", thread.gsbase);
 
     if (copy_to_user(ubuf, buf, len)) {
         return -EFAULT;
@@ -47,12 +47,12 @@ static size_t write_vm_area_struct(char __user* ubuf, struct task_struct* task) 
     size_t len = 0;
 
     struct vm_area_struct* vm_area = find_vma(task->mm, (unsigned long)(NULL));
-    len += sprintf(buf + len, "%16s %16s %12s %20s %20s\n", "start", "end", "permissions", "flags",
+    len += sprintf(buf + len, "%16s %16s %16s %16s %16s\n", "start", "end", "permissions", "flags",
                    "offset");
 
     for (size_t i = 0; vm_area && i < 30; i++) {
         unsigned long pgprot = vm_area->vm_page_prot.pgprot;
-        len += sprintf(buf + len, "%16lx %16lx %12lo %20lu %20lu\n", vm_area->vm_start,
+        len += sprintf(buf + len, "%16lx %16lx %16lo %16lu %16lu\n", vm_area->vm_start,
                        vm_area->vm_end, pgprot >= (unsigned long)(32768) ? 0 : pgprot,
                        vm_area->vm_flags, vm_area->vm_pgoff);
         vm_area = vm_area->vm_next;

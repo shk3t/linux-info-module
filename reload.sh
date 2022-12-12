@@ -1,6 +1,6 @@
 #!/bin/bash
 
-MODNAME="lab-module"
+MODNAME="info-module"
 
 make
 sudo rmmod $MODNAME
